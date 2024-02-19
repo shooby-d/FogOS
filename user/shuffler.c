@@ -17,6 +17,8 @@ int lcg() {
     return rseed = (rseed * 1103515245 + 12345) & RAND_MAX;
 }
 
+/* Fisher-Yates Modern Shuffling Algorithm */
+
 void fisher_yates(vec_t* vec) {
   // random seed range
   srand((uint32)(time() % 1000000));
@@ -26,7 +28,7 @@ void fisher_yates(vec_t* vec) {
 
   for (i = vec->len - 1; i > 0; i--) {
     j = lcg() % (i + 1);
-    tmp = vec->strings[i];
+    tmp = vec->strings[j];
     vec->strings[j] = vec->strings[i];
     vec->strings[i] = tmp;
   }

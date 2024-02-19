@@ -11,12 +11,18 @@
 *     - System call for unix-time
 */
 
+void arg_error(char* error)
+{
+  printf("shuf error: %s\n", error);
+  exit(-1);
+}
+
 void parse_file(config_t* cp, vec_t *vec) 
 {
-  vec_init(vec, 5);
   uint sz = 0;
   char *line = NULL;
   int fd = open(cp->input, O_RDONLY);
+  if (fd == -1) arg_error("Input file doesn't exist)");
   while (1) {
     if (getline(&line, &sz, fd) <= 0) {
       break;
@@ -24,12 +30,6 @@ void parse_file(config_t* cp, vec_t *vec)
     vec_push(vec, line);
   }
   free(line);
-}
-
-void arg_error(char* error)
-{
-  printf("shuf error: %s\n", error);
-  exit(-1);
 }
 
 void update_file(config_t* cp, char* fn, int option)
@@ -74,6 +74,7 @@ void parse_input(int argc, char** argv, config_t* cp)
         arg_error("No line count present after -n flag");
       }
       int n = atoi(argv[i]);
+      if (n <= 0) arg_error("Requesting 0 or less lines in output");
       update_lines_printed(cp, n);
     } else {
       arg_error("Unknown flag found");
@@ -86,19 +87,54 @@ void parse_input(int argc, char** argv, config_t* cp)
   }
 }
 
+void handle_output(config_t* cp, vec_t* vec)
+{
+  fisher_yates(vec);
+  // handler for no output file, print to stdout
+  if (strlen(cp->output) == 0) {
+    // handler for num_lines to output
+    switch (cp->num_lines) {
+      case -1:
+        for (int i = 0; i < vec->len; i++) {
+          printf("%s", vec->strings[i]);
+        }
+        break;
+      default:
+        if (cp->num_lines >= vec->len) arg_error("Requesting more lines printed than found in file");
+        for (int i = 0; i < cp->num_lines; i++) {
+          printf("%s", vec->strings[i]);
+        }
+        break;
+    }
+  } else {
+    int fd = open(cp->output, O_WRONLY);
+    if (fd == -1) arg_error("Output file doesn't exist");
+    switch (cp->num_lines) {
+      case -1:
+        for (int i = 0; i < vec->len; i++) {
+          fprintf(fd, "%s", vec->strings[i]);
+        }
+        break;
+      default:
+        if (cp->num_lines >= vec->len) arg_error("Requesting more lines printed than found in file");
+        for (int i = 0; i < cp->num_lines; i++) {
+          fprintf(fd, "%s", vec->strings[i]);
+        }
+        break;
+    }
+  }
+  return;
+}
+
 int main(int argc, char** argv)
 {
   vec_t vec;
-  config_t config = {"", "", 0};
+  vec_init(&vec, 5);
+  config_t config = {"", "", -1};
+  
   parse_input(argc, argv, &config);
   parse_file(&config, &vec);
-
-  int i;
-  for (i = 0; i < vec.len; i++) {
-    printf("%s\n", vec.strings[i]);
-  }
-
-  vec_free(&vec);
-
+  handle_output(&config, &vec);
+  
   return 0;
 }

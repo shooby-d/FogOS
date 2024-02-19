@@ -45,12 +45,3 @@ void vec_push(vec_t* vec, char* string)
 
   (vec->len)++;
 }
-
-void vec_free(vec_t* vec) 
-{
-  int i;
-  for (i = 0; i < vec->len; i++) {
-    free(vec->strings[i]);
-  }
-  free(vec->strings);
-}

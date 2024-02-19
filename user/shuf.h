@@ -19,7 +19,6 @@ typedef struct {
 /* Vector structure functions */
 extern void vec_init(vec_t* vec, int start_sz);
 extern void vec_push(vec_t* vec, char* string);
-extern void vec_free(vec_t* vec);
 
 /* Randomizing functions */
 extern void srand(int x);
