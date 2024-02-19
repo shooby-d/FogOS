@@ -76,6 +76,9 @@ void parse_input(int argc, char** argv, config_t* cp)
       int n = atoi(argv[i]);
       if (n <= 0) arg_error("Requesting 0 or less lines in output");
       update_lines_printed(cp, n);
+    } else if (strcmp(argv[i], "-h") == 0) {
+      printf("Usage: shuf -f \"file name\" *required*\nAdditional flags:\n-n \"# of lines to output\"\n-o \"file name to output to\"\n");
+      exit(0);
     } else {
       arg_error("Unknown flag found");
     }
