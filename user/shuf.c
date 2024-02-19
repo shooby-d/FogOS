@@ -1,5 +1,6 @@
 #include "shuf.h"
 #include "user.h"
+#include "../kernel/fcntl.h"
 
 /* Requirements for use 
 * 1. Makefile
@@ -10,20 +11,20 @@
 *     - System call for unix-time
 */
 
-/*void parse_file (char *file_name, vec_t *vec){
-	uint sz = 10;
-	char *line = malloc(sz);
-	int fd = open(file_name, O_RDONLY);
-	while(1){
-		if(getline(&line, &sz, fd) <= 0){
-			printf("getline err so sad \n");
-			return;
-		}
-		vec_push(vec, line);
+void parse_file(config_t* cp, vec_t *vec) 
+{
+  vec_init(vec, 5);
+  uint sz = 0;
+  char *line = NULL;
+  int fd = open(cp->input, O_RDONLY);
+  while (1) {
+    if (getline(&line, &sz, fd) <= 0) {
+      break;
 	}
-
-	free(line);
-}*/
+    vec_push(vec, line);
+  }
+  free(line);
+}
 
 void arg_error(char* error)
 {
@@ -90,14 +91,12 @@ int main(int argc, char** argv)
   vec_t vec;
   config_t config = {"", "", 0};
   parse_input(argc, argv, &config);
-  vec_init(&vec, 5);
+  parse_file(&config, &vec);
 
-  printf("input file name: %s\n", config.input);
-  printf("input output name: %s\n", config.output);
-  printf("input lines output: %d\n", config.num_lines);
-
-  srand((uint32)(time() % 1000000));
-  printf("and a random number: %d\n", lcg());
+  int i;
+  for (i = 0; i < vec.len; i++) {
+    printf("%s\n", vec.strings[i]);
+  }
 
   vec_free(&vec);
 
