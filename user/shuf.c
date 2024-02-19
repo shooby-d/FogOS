@@ -6,14 +6,14 @@
 * 1. Makefile
 *     - Add shuf to UPROGS
 *     - Add vec.o to ULIB
-*     - Add randomizer.o to ULIB
+*     - Add shuffler.o to ULIB
 * 2. Additional
 *     - System call for unix-time
 */
 
 void arg_error(char* error)
 {
-  printf("shuf error: %s\n", error);
+  printf("shuf: %s\n", error);
   exit(-1);
 }
 
