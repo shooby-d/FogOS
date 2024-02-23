@@ -110,7 +110,7 @@ void handle_output(config_t* cp, vec_t* vec)
         break;
     }
   } else {
-    int fd = open(cp->output, O_WRONLY);
+    int fd = open(cp->output, O_CREATE | O_RDWR);
     if (fd == -1) arg_error("Output file doesn't exist");
     switch (cp->num_lines) {
       case -1:
