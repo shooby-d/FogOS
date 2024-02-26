@@ -36,7 +36,6 @@ void vec_push(vec_t* vec, char* string)
     free(vec->strings);
     vec->strings = new_buf;
   }
-
   // essentially strdup
   int string_len = strlen(string);
   vec->strings[vec->len] = malloc(string_len + 1);

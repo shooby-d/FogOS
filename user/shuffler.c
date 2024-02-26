@@ -25,7 +25,6 @@ void fisher_yates(vec_t* vec) {
 
   int i, j;
   char* tmp;
-
   for (i = vec->len - 1; i > 0; i--) {
     j = lcg() % (i + 1);
     tmp = vec->strings[j];

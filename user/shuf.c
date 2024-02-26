@@ -2,7 +2,8 @@
 #include "user.h"
 #include "../kernel/fcntl.h"
 
-/* Requirements for use 
+/* shuf.c - shuffles an input file's lines
+* Requirements for use 
 * 1. Makefile
 *     - Add shuf to UPROGS
 *     - Add vec.o to ULIB
@@ -59,7 +60,6 @@ void parse_input(int argc, char** argv, config_t* cp)
 {
   int i = 1;
   while (i < argc) {
-   
     if (strcmp(argv[i], "-o") == 0) {
       if (argv[++i] == NULL) {
          arg_error("No file present after -o flag");
@@ -76,21 +76,16 @@ void parse_input(int argc, char** argv, config_t* cp)
       printf("Usage: shuf \"file name\" *required*\nAdditional flags:\n-n \"# of lines to output\"\n-o \"file name to output to\"\n");
       exit(0);
     } else {
-    
-      if (argv[i][0] == '-'){
+      if (argv[i][0] == '-') {
       	  arg_error("Invalid flag");
       }
-
       if (strlen(cp->input) != 0) {
-      	arg_error("Too many files: possibly missing flag for output file");
+      	arg_error("Too many files, possibly missing flag for output file");
       }
-
 	  update_file(cp, argv[i], 1);
-    }  
-
+    }
     i++;
   }
-
   if (strlen(cp->input) == 0) {
     arg_error("No input file found");
   }
@@ -98,7 +93,7 @@ void parse_input(int argc, char** argv, config_t* cp)
 
 void handle_output(config_t* cp, vec_t* vec)
 {
-  fisher_yates(vec);
+  fisher_yates(vec); // shuffle file
   // handler for no output file, print to stdout
   if (strlen(cp->output) == 0) {
     // handler for num_lines to output
