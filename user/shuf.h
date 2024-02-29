@@ -16,6 +16,9 @@ typedef struct {
   int num_lines;
 } config_t;
 
+/* Tests */
+extern void shuf_start(int argc, char** tests);
+
 /* Vector structure functions */
 extern void vec_init(vec_t* vec, int start_sz);
 extern void vec_push(vec_t* vec, char* string);
@@ -23,8 +26,9 @@ extern void vec_push(vec_t* vec, char* string);
 /* Randomizing functions */
 extern void srand(int x);
 extern int lcg();
-extern void fisher_yates(vec_t* vec);
+extern void fisher_yates(vec_t* vec, int flag);
 
 extern int rseed;
+
 
 #endif /* SHUF_H */

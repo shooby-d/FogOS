@@ -1,6 +1,7 @@
 #include "shuf.h"
 #include "user.h"
 
+
 /* The following code for LCG cited from:
  * https://rosettacode.org/wiki/Linear_congruential_generator
 */
@@ -19,12 +20,20 @@ int lcg() {
 
 /* Fisher-Yates Modern Shuffling Algorithm */
 
-void fisher_yates(vec_t* vec) {
+void fisher_yates(vec_t* vec, int flag) {
   // random seed range
-  srand((uint32)(time() % 1000000));
+  if (flag == 0){
+  	  srand((uint32)(time() % 1000000));
+
+  } 
+
+  if (flag != 0){
+  	  srand((uint32)(flag % 1000000));
+  }
 
   int i, j;
   char* tmp;
+
   for (i = vec->len - 1; i > 0; i--) {
     j = lcg() % (i + 1);
     tmp = vec->strings[j];
@@ -32,3 +41,4 @@ void fisher_yates(vec_t* vec) {
     vec->strings[i] = tmp;
   }
 }
+
