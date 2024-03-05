@@ -1,6 +1,7 @@
 #include "shuf.h"
 #include "user.h"
 
+#define RAND_MAX ((1U << 31) - 1)
 
 /* The following code for LCG cited from:
  * https://rosettacode.org/wiki/Linear_congruential_generator
@@ -8,19 +9,20 @@
 
 int rseed = 0;
 
-void srand(int x) {
+void srand(int x) 
+{
   rseed = x;
 }
 
-#define RAND_MAX ((1U << 31) - 1)
-
-int lcg() {
-    return rseed = (rseed * 1103515245 + 12345) & RAND_MAX;
+int lcg() 
+{
+  return rseed = (rseed * 1103515245 + 12345) & RAND_MAX;
 }
 
 /* Fisher-Yates Modern Shuffling Algorithm */
 
-void fisher_yates(vec_t* vec, int flag) {
+void fisher_yates(vec_t* vec, int flag) 
+{
   // random seed range
   if (flag == 0){
   	  srand((uint32)(time() % 1000000));
