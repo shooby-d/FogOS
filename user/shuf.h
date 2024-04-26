@@ -1,8 +1,11 @@
-#ifndef SHUF_H
-#define SHUF_H
+#include "user.h"
+#include "../kernel/fcntl.h"
 
 #define FILE_NAME_LEN 64
 #define NULL ((void *) 0)
+
+#define INPUT 1
+#define OUTPUT 2
 
 typedef struct {
   int cap;
@@ -17,7 +20,7 @@ typedef struct {
 } config_t;
 
 /* Tests */
-extern void shuf_start(int argc, char** tests);
+extern void test_shuf(void);
 
 /* Vector structure functions */
 extern void vec_init(vec_t* vec, int start_sz);
@@ -29,6 +32,3 @@ extern int lcg();
 extern void fisher_yates(vec_t* vec, int flag);
 
 extern int rseed;
-
-
-#endif /* SHUF_H */
