@@ -1,0 +1,31 @@
+xv6 shuf utility by David and Sanju
+
+Usage: shuf -h | file_name [-o output_file] [-n lines to output]
+
+Flags:
+ Help/usage with "-h"
+ Output to a file with "-o"
+ Output only a specific # of lines with "-n"
+ * Follow the above usage pattern to avoid problems
+
+Requirements for use
+_____________________
+Makefile:
+- ULIB: vec.o shuffler.o
+- UPROGS: shuf test_shuf
+System:
+- unix time system call
+_____________________
+
+Vector/vector functions (dynamic string array)
+ - Can be used for other things too, that's why it's
+ separate from the shuf files/functions
+
+Fisher Yates Algorithm + LCG + time system call
+ - Used for shuffle and randomizing
+ - Citation for LCG: 
+   https://rosettacode.org/wiki/Linear_congruential_generator
+
+Testing
+ - Testing is already set up, but values/inputs can be changed
+ for whatever tests you want to run
